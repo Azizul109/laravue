@@ -12,7 +12,7 @@
                 <div class="col-md-8">
                     <div class="card">
 
-                        @if(session('success'))
+                        @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <strong>{{ session('success') }}</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -27,22 +27,32 @@
 
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th scope="col">SL No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Created At</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">SL No</th>
+                                    <th scope="col">Category Name</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Action</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row"></th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                                {{-- @php($i = 1) --}}
+                                @foreach ($categories as $category)
+                                    <tr>
+                                        <th scope="row"> {{ $categories->firstItem()+$loop->index  }} </th>
+                                        <td> {{ $category->category_name }} </td>
+                                        <td> {{ $category->user->name }} </td>
+{{--                                        <td> {{ $category->name }} </td>--}}
+                                        <td> {{ $category->created_at }} </td>
+                                        <td>
+                                            <a href="{{ url('category/edit/'.$category->id) }}" class="btn btn-info">Edit</a>
+                                            <a href="" class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
+                        {{ $categories->links() }}
                     </div>
                 </div>
 
@@ -56,11 +66,11 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Category name</label>
-                                    <input type="text" name="category_name" class="form-control" id="exampleInputEmail1"
-                                           aria-describedby="emailHelp">
+                                    <input type="text" name="category_name" class="form-control"
+                                        id="exampleInputEmail1" aria-describedby="emailHelp">
 
                                     @error('category_name')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <button type="submit" class="btn btn-primary">Add category</button>
